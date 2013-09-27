@@ -20,23 +20,23 @@ func MoneySpecs(c gospec.Context) {
 	//
 
 	c.Specify("[Money][MakeMicrosPer1x] Returns Micros", func() {
-		value := MakeMoneyMicrosPer1x(123456789)
-		c.Expect(value.MicrosPer1x, gospec.Equals, int64(123456789))
+		value := MakeMicrosPer1x(123456789)
+		c.Expect(value.MicrosPer1x(), gospec.Equals, int64(123456789))
 	})
 
 	c.Specify("[Money][MakeCostPerMille] Returns CPM", func() {
-		value := MakeMoneyCostPerMille(float64(0.50))
-		c.Expect(value.MicrosPer1x, gospec.Equals, int64(500))
+		value := MakeCostPerMille(float64(0.50))
+		c.Expect(value.MicrosPer1x(), gospec.Equals, int64(500))
 	})
 
 	c.Specify("[Money][MakeCPM] Formats CPM", func() {
-		value := MakeMoneyCPM(float64(123456.789))
-		c.Expect(value.MicrosPer1x, gospec.Equals, int64(123456789))
+		value := MakeCPM(float64(123456.789))
+		c.Expect(value.MicrosPer1x(), gospec.Equals, int64(123456789))
 	})
 
 	c.Specify("[Money][MakeDollarsPer1x] Formats Dollars", func() {
-		value := MakeMoneyDollarsPer1x(float64(123.456789))
-		c.Expect(value.MicrosPer1x, gospec.Equals, int64(123456789))
+		value := MakeDollarsPer1x(float64(123.456789))
+		c.Expect(value.MicrosPer1x(), gospec.Equals, int64(123456789))
 	})
 
 	//
@@ -45,7 +45,7 @@ func MoneySpecs(c gospec.Context) {
 
 	c.Specify("[Money][MicrosPer1x] Returns Micros", func() {
 		value := &Money{123456789}
-		c.Expect(value.MicrosPer1x, gospec.Equals, int64(123456789))
+		c.Expect(value.MicrosPer1x(), gospec.Equals, int64(123456789))
 	})
 
 	c.Specify("[Money][CostPerMille] Returns CPM", func() {
@@ -91,24 +91,24 @@ func MoneySpecs(c gospec.Context) {
 
 func Benchmark_MakeMicrosPer1x(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		MakeMoneyMicrosPer1x(123456789)
+		MakeMicrosPer1x(123456789)
 	}
 }
 
 func Benchmark_MakeCostPerMille(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		MakeMoneyCostPerMille(float64(123.456789))
+		MakeCostPerMille(float64(123.456789))
 	}
 }
 
 func Benchmark_MakeCPM(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		MakeMoneyCPM(float64(123456.789))
+		MakeCPM(float64(123456.789))
 	}
 }
 
 func Benchmark_MakeDollarsPer1x(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		MakeMoneyDollarsPer1x(float64(123.456789))
+		MakeDollarsPer1x(float64(123.456789))
 	}
 }

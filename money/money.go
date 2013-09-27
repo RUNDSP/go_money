@@ -6,7 +6,7 @@ import "fmt"
 // Money:
 //
 type Money struct {
-	MicrosPer1x int64 "Price in micros per instance"
+	microsPer1x int64 "Price in micros per instance"
 }
 
 //
@@ -28,48 +28,52 @@ const (
 
 // Make a new instance of Money from a CPM
 // CPM --> Dollars per 1x --> Micros per 1x
-func MakeMoneyCostPerMille(value float64) *Money {
+func MakeCostPerMille(value float64) *Money {
 	// DEBUGING:
-	// fmt.Println("MakeMoneyCostPerMille", value, value*CPM_to_Dollars1x)
+	// fmt.Println("MakeCostPerMille", value, value*CPM_to_Dollars1x)
 
-	return MakeMoneyDollarsPer1x(value * CPM_to_Dollars1x)
+	return MakeDollarsPer1x(value * CPM_to_Dollars1x)
 }
 
 // Make a new instance of Money from a CPM
 // CPM --> Dollars per 1x --> Micros per 1x
-func MakeMoneyCPM(value float64) *Money {
+func MakeCPM(value float64) *Money {
 	// DEBUGING:
-	// fmt.Println("MakeMoneyCostPerMille", value)
+	// fmt.Println("MakeCostPerMille", value)
 
-	return MakeMoneyCostPerMille(value)
+	return MakeCostPerMille(value)
 }
 
 // Make a new instance of Money from (Total) Dollars
 // Dollars per 1x --> Micros per 1x
-func MakeMoneyDollarsPer1x(value float64) *Money {
+func MakeDollarsPer1x(value float64) *Money {
 	// DEBUGING:
-	// fmt.Println("MakeMoneyDollarsPer1x", value, int64(value*Dollars1x_to_Micros1x))
+	// fmt.Println("MakeDollarsPer1x", value, int64(value*Dollars1x_to_Micros1x))
 
-	return MakeMoneyMicrosPer1x(int64(value * Dollars1x_to_Micros1x))
+	return MakeMicrosPer1x(int64(value * Dollars1x_to_Micros1x))
 }
 
 // Make a new instance of Money from (Total) Micros
-func MakeMoneyMicrosPer1x(value int64) *Money {
+func MakeMicrosPer1x(value int64) *Money {
 	// DEBUGING:
-	// fmt.Println("MakeMoneyMicrosPer1x", value)
+	// fmt.Println("MakeMicrosPer1x", value)
 
-	return &Money{MicrosPer1x: value}
+	return &Money{value}
 }
 
 //
 // Conversion Utilities:
 //
 
+func (p *Money) MicrosPer1x() int64 {
+	return p.microsPer1x
+}
+
 // The “cost per thousand advertising impressions” metric (CPM)
 // CPM is useful in comparing the relative efficiency of different advertising
 // opportunities or media and in evaluating the costs of overall campaigns.
 func (p *Money) CostPerMille() float64 {
-	return float64(p.MicrosPer1x) * Micros1x_to_CPM
+	return float64(p.MicrosPer1x()) * Micros1x_to_CPM
 }
 
 // Cost per mille, the advertising cost per thousand views
@@ -79,7 +83,7 @@ func (p *Money) CPM() float64 {
 
 // Dollars per 1x instance
 func (p *Money) DollarsPer1x() float64 {
-	return float64(p.MicrosPer1x) * Micros1x_to_Dollars1x
+	return float64(p.MicrosPer1x()) * Micros1x_to_Dollars1x
 }
 
 //
@@ -87,7 +91,7 @@ func (p *Money) DollarsPer1x() float64 {
 //
 
 func (p *Money) String() string {
-	return fmt.Sprintf("µ%d(1x)", p.MicrosPer1x)
+	return fmt.Sprintf("µ%d(1x)", p.MicrosPer1x())
 }
 
 func (p *Money) CostPerMilleStr() string {
