@@ -65,43 +65,74 @@ func MakeMicrosPer1x(value int64) *Money {
 // Conversion Utilities:
 //
 
+// 
+// USD Micros per instance
+// 
 func (p *Money) MicrosPer1x() int64 {
 	return p.microsPer1x
 }
 
+// 
+// Dollars per 1x instance
+// 
+// Dollars = MicrosPer1x / 1_000_000
+func (p *Money) DollarsPer1x() float64 {
+	return float64(p.MicrosPer1x()) * Micros1x_to_Dollars1x
+}
+
+// 
 // The “cost per thousand advertising impressions” metric (CPM)
+// 
+// CPM = MicrosPer1x / 1_000
+// 
 // CPM is useful in comparing the relative efficiency of different advertising
 // opportunities or media and in evaluating the costs of overall campaigns.
 func (p *Money) CostPerMille() float64 {
 	return float64(p.MicrosPer1x()) * Micros1x_to_CPM
 }
 
-// Cost per mille, the advertising cost per thousand views
+// 
+// Alias to Money.CostPerMille()
+// 
 func (p *Money) CPM() float64 {
 	return p.CostPerMille()
-}
-
-// Dollars per 1x instance
-func (p *Money) DollarsPer1x() float64 {
-	return float64(p.MicrosPer1x()) * Micros1x_to_Dollars1x
 }
 
 //
 // String Format Utilities:
 //
 
+// 
+// Alias to Money.MicrosPer1xStr()
+// 
 func (p *Money) String() string {
+	return p.MicrosPer1xStr()
+}
+
+// 
+// µ########(1x) Micros per instance
+// 
+func (p *Money) MicrosPer1xStr() string {
 	return fmt.Sprintf("µ%d(1x)", p.MicrosPer1x())
 }
 
+// 
+// $#.######(1x) Dollars per instance
+// 
+func (p *Money) DollarsPer1xStr() string {
+	return fmt.Sprintf("$%0.6f(1x)", p.DollarsPer1x())
+}
+
+// 
+// $#.######(CPM) Cost per mille, the advertising cost per thousand views
+// 
 func (p *Money) CostPerMilleStr() string {
 	return fmt.Sprintf("$%0.6f(CPM)", p.CostPerMille())
 }
 
+// 
+// $#.######(CPM) Alias to Money.CostPerMilleStr()
+// 
 func (p *Money) CPMStr() string {
 	return p.CostPerMilleStr()
-}
-
-func (p *Money) DollarsPer1xStr() string {
-	return fmt.Sprintf("$%0.6f(1x)", p.DollarsPer1x())
 }
